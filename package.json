@@ -1,0 +1,20 @@
+{
+  "name": "touch-the-grass",
+  "version": "1.0.0",
+  "description": "this is a web app that helps users post their travel experiences easily with auth",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "harshmangalamv",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.4",
+    "nodemon": "^3.0.2",
+    "zod": "^3.22.4"
+  }
+}
