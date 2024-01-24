@@ -1,37 +1,78 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const path = require('path');
-const zod = require("zod");
-const { signup_middleware } = require("./middlewares/signup.js");
+var express = require("express");
+var app = express();
+var request = require("request");
+var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var passport = require("passport"),
+  User = require("./models/user"),
+  LocalStrategy = require("passport-local");
+//requiring seedsDB
+var Campground = require("./models/campground");
+var Comment = require("./models/comment");
+// var seedDB = require("./seeds");
+//Include routes
+var commentRoutes = require("./routes/comments");
+var campgroundRoutes = require("./routes/campgrounds");
+var authRoutes = require("./routes/index");
+var methodOverride = require("method-override");
+var ejsLint = require('ejs-lint');
 
-const PORT = 3000;
 
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'public')));
+// Connect mongoose
+mongoose.connect("mongodb+srv://rrahashya:RCVXAN4tXFwhnbG1@cluster0.mnxrxa7.mongodb.net/",
+  { useNewUrlParser: true, useUnifiedTopology: true });
+
+// mongoose.connect("mongodb://localhost/yelp_camp", {useNewUrlParser: true, useUnifiedTopology: true});
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(__dirname + "/public"));
+app.use(methodOverride("_method"));
+// console.log(__dirname);
+app.set("view engine", "ejs");
 
-app.get('/', (req, res) => {
-  res.render('home');
-})
+// seedDB(); //seed the database
 
-app.get('/signup', (req, res) => {
-  res.render('signup');
-})
-
-app.get('/users', (req, res) => {
-  res.render('users');
-})
-
-app.post('/signup', signup_middleware,  (req, res) => {
-  res.redirect('home');
-})
+//Passport configuration
+app.use(require("express-session")({
+  secret: "Once again rusty is the cutest dog",
+  resave: false,
+  saveUninitialized: false
+}));
 
 
-app.get('/home', (req, res) => {
-  res.render('home');
-})
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+//SO that we do not have to add it to every route
+////////
+//NEW///
+///////
+/**
+ * This middleware sets a local variable currentUser on
+ * the response object, containing user information from
+ * req.user. It's commonly used to make user data available
+ * in views and middleware throughout the request-response 
+ * cycle, often applied after user authentication.
+ */
+app.use(function (req, res, next) {
+  res.locals.currentUser = req.user;
+  next();
+});
 
 
-app.listen(PORT);
+///////////
+//ROUTES//
+//////////
+app.use(commentRoutes);
+app.use(campgroundRoutes);
+app.use(authRoutes);
+
+var port = process.env.PORT || 3001;
+app.listen(port, function () {
+  console.log("Server Has Started!");
+});
+
