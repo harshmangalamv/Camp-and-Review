@@ -1,5 +1,5 @@
 {
-  "name": "yelp-camp",
+  "name": "camp-and-review",
   "version": "1.0.0",
   "description": "this is a web app that helps users post their travel experiences easily with auth",
   "main": "app.js",

@@ -1,14 +1,14 @@
 var express = require("express");
 var app = express();
-var request = require("request");
+// var request = require("request");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var passport = require("passport"),
   User = require("./models/user"),
   LocalStrategy = require("passport-local");
 //requiring seedsDB
-var Campground = require("./models/campground");
-var Comment = require("./models/comment");
+// var Campground = require("./models/campground");
+// var Comment = require("./models/comment");
 // var seedDB = require("./seeds");
 //Include routes
 var commentRoutes = require("./routes/comments");
@@ -19,10 +19,16 @@ var ejsLint = require('ejs-lint');
 
 
 // Connect mongoose
-mongoose.connect("mongodb+srv://rrahashya:RCVXAN4tXFwhnbG1@cluster0.mnxrxa7.mongodb.net/",
-  { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://rrahashya:xuZnBvHRoOGdxKKw@cluster0.q7cn53v.mongodb.net/");
+  // { useNewUrlParser: true, useUnifiedTopology: true });
+let dbURL = "mongodb://localhost:27017";
+// mongoose.connect(dbURL).then(() => {
+//   console.log("db is connected succsesfully");
+// }).catch((err) => {
+//   console.log(err);
+// });
 
-// mongoose.connect("mongodb://localhost/yelp_camp", {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect("mongodb://localhost/camp_and_review", {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 app.use(bodyParser.urlencoded({ extended: true }));

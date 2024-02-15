@@ -7,16 +7,16 @@ var campgroundSchema = new mongoose.Schema({
   Author: {
     id: {
       type: mongoose.Schema.Types.ObjectId,
-      //For refrence name go to the user.js schema and check (mongoose.model("User", UserSchema);)
+      //For reference name go to the user.js schema and check (mongoose.model("User", UserSchema);)
       //It's written "User" there
       ref: "User"
     },
     username: String
   },
-  Comments: [
+  Comments: [ // Comments field defined as an array of objectIds
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Comment"
+      ref: "Comment" // reference to another Mongoose model named "Comment"
     }
   ]
 });
